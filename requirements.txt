@@ -1,0 +1,9 @@
+PyPDF2
+pdf2image
+pytesseract
+pillow
+sentence-transformers
+numpy
+keras==2.13.1
+tensorflow==2.13.0
+torch==2.2.0
