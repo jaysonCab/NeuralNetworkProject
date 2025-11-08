@@ -29,7 +29,7 @@ from keras.utils import to_categorical
 ########## File setup
 DirectoryName = 'TrainingData'                                              # Directory name from folder structure
 files = os.listdir(DirectoryName)                                           # Grab names of PDF files and places it in list in files variable
-embedder = SentenceTransformer("all-mpnet-base-v2")                         # Embedding model used to process PDF text into inputs for NN | 768th dimension --> 768 vectors
+embedder = SentenceTransformer("all-MiniLM-L6-v2")                         # Embedding model used to process PDF text into inputs for NN | 768th dimension --> 768 vectors
 layerOneNeurons = 10                                                        # Number of neurons in the first layer
 # layerTwoNeurons = 6                                                         # Number of neurons in the second layer
 listOfEmbeddings = []                                                       # Will hold all embedding values for each training data file in this list
@@ -68,23 +68,23 @@ for item in files:
 
 # Neural network build out
 model = Sequential([
-    Dense(layerOneNeurons, activation='relu', input_shape=(768,)),          # input_shape = 768 as there are that many dimensions in embeddings
+    Dense(layerOneNeurons, activation='relu', input_shape=(384,)),          # input_shape = 768 as there are that many dimensions in embeddings
     # layers.Dense(layerTwoNeurons, activation='relu'),
-    Dense(4)                                                                # 4 potential outputs. 3 = Excellent | 2 = good | 1 = average | 0 = poor
+    Dense(3)                                                                # 4 potential outputs. 3 = Excellent | 2 = good | 1 = average | 0 = poor
 ])
 
 # Neural network Keras works off of array datatype.
 X = np.array(listOfEmbeddings)
-y = to_categorical(labels, num_classes = 4)                                 # to_categorical does one-hot encoding, basically when training 1 output gets a value 1, the rest get 0
+y = to_categorical(labels, num_classes = 3)                                 # to_categorical does one-hot encoding, basically when training 1 output gets a value 1, the rest get 0
 
-# More details on how the model trains
+# More details on how the model trains 
 model.compile(
     optimizer='adam',                                                       # ChatGPT states adam is the best optimizer for small datasets
     loss='categorical_crossentropy',                                        # Suitable loss for multi-class classification
     metrics=['accuracy']
 )
 
-history = model.fit(
+history = model.fit( 
     X, y,
     epochs=50,           # Small dataset → can train more epochs without overfitting much
     batch_size=8,        # Small batch size for tiny dataset
