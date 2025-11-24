@@ -74,7 +74,7 @@ for item in files:
 model = Sequential([
     Dense(layerOneNeurons, activation='relu', input_shape=(128,)),          # input_shape = 128 as there are that many dimensions in embeddings
     # layers.Dense(layerTwoNeurons, activation='relu'),
-    Dense(3)                                                                # 3 potential outputs. 2 = good | 1 = average | 0 = poor
+    Dense(3, activation='softmax')                                                                # 3 potential outputs. 2 = good | 1 = average | 0 = poor
 ])
 
 # Neural network Keras works off of array datatype.
